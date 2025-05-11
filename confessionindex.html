@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Farewell 2025 MCA Confessions</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #ffccff, #ccffff, #ffffcc);
+      overflow: hidden;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      position: relative;
+    }
+
+    .header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      text-align: center;
+      padding: 20px 10px;
+      background: linear-gradient(to right, #ff99cc, #66ccff);
+      color: white;
+      font-weight: bold;
+      font-size: 1.8rem;
+      box-shadow: 0px 3px 10px rgba(0,0,0,0.2);
+      z-index: 10;
+    }
+
+    .pond {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      padding-top: 80px;
+      overflow: hidden;
+    }
+
+    .fish {
+      position: absolute;
+      padding: 14px 18px;
+      font-size: 1rem;
+      font-weight: bold;
+      color: white;
+      border-radius: 16px;
+      background: linear-gradient(to right, #ff6699, #ff9966);
+      box-shadow: 0px 0px 15px rgba(0,0,0,0.3);
+      animation: float 25s linear infinite;
+      white-space: nowrap;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateX(-300px);
+        top: calc(100% * var(--rand));
+      }
+      100% {
+        transform: translateX(120vw);
+        top: calc(100% * var(--rand));
+      }
+    }
+
+    form {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ffffffcc;
+      padding: 15px 25px;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    input {
+      padding: 12px;
+      width: 280px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      background-color: #f0f0f0;
+    }
+
+    button {
+      padding: 12px 18px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(to right, #33ccff, #ff66cc);
+      color: white;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    /* Bubble Animation */
+    .bubble {
+      position: absolute;
+      bottom: -100px;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+      animation: rise 20s linear infinite;
+    }
+
+    @keyframes rise {
+      0% {
+        transform: translateY(0) scale(0.5);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-120vh) scale(1.2);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    🎉 Farewell 2025 - MCA Confessions 🎓
+  </div>
+
+  <div class="pond" id="pond"></div>
+
+  <form id="confessForm">
+    <input type="text" id="message" placeholder="Share your confession 💌" required>
+    <button type="submit">Confess 🐠</button>
+  </form>
+
+  <script>
+    const pond = document.getElementById('pond');
+    const form = document.getElementById('confessForm');
+    const input = document.getElementById('message');
+
+    // 🔗 Replace with your actual Apps Script URL
+    const API_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL';
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const msg = input.value.trim();
+      if (!msg) return;
+
+      fetch(API_URL, {
+        method: 'POST',
+        body: JSON.stringify({ confession: msg }),
+        headers: { 'Content-Type': 'application/json' }
+      })
+      .then(res => res.text())
+      .then(() => {
+        input.value = '';
+        addFish(msg);
+      });
+    });
+
+    function addFish(message) {
+      const fish = document.createElement('div');
+      fish.className = 'fish';
+      fish.textContent = message;
+      fish.style.setProperty('--rand', Math.random());
+      fish.style.left = '-300px';
+      pond.appendChild(fish);
+      setTimeout(() => fish.remove(), 25000);
+    }
+
+    // Bubbles
+    function createBubbles() {
+      for (let i = 0; i < 20; i++) {
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble';
+        bubble.style.width = bubble.style.height = `${Math.random() * 20 + 10}px`;
+        bubble.style.left = `${Math.random() * 100}vw`;
+        bubble.style.animationDuration = `${10 + Math.random() * 20}s`;
+        pond.appendChild(bubble);
+      }
+    }
+
+    createBubbles();
+  </script>
+</body>
+</html>
